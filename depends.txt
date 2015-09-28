@@ -1,9 +1,15 @@
 default
 farming?
+wool?
+flowers?
+bucket?
 mobs?
+homedecor?
+teleport_potion?
+protector?
 ethereal?
+fire?
 bakedclay?
 pie?
-paintings?
-carpet?
+xanadu?
 3d_armor?

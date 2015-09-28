@@ -1,11 +1,17 @@
 lucky_block = {}
 
--- default block
+local USE_DEFAULT_BLOCKS = true
+local USE_DEFAULT_CHEST_ITEMS = true
+local USE_DEFAULT_SCHEMATICS = true
+
 local lucky_list = {
-	{"fal", {"default:wood", "default:gravel", "default:sand", "default:desert_sand", "default:stone", "default:dirt", "default:goldblock"}, 0},
-	{"lig"},
-	{"nod", "lucky_block:super_lucky_block", 0},
+	{"nod", "lucky_block:super_lucky_block", 0}
 }
+local chest_stuff = {}
+
+
+-- EXTERNAL FUNCTIONS
+-- ******************
 
 -- ability to add new blocks to list
 function lucky_block:add_blocks(list)
@@ -14,22 +20,33 @@ function lucky_block:add_blocks(list)
 	end
 end
 
--- import blocks
-dofile(minetest.get_modpath("lucky_block").."/blocks.lua")
+-- ability to add chest items
+function lucky_block:add_chest_items(list)
+	for s = 1, #list do
+		table.insert(chest_stuff, list[s])
+	end
+end
+
+-- ******************
+-- END EXTERNAL FUNCTIONS
+
+
+-- load defaults??
+local path = minetest.get_modpath("lucky_block")
+if USE_DEFAULT_CHEST_ITEMS then
+	dofile(path.."/default_chest_items.lua")
+end
+if USE_DEFAULT_SCHEMATICS then
+	dofile(path.."/default_schems.lua")
+end
+if USE_DEFAULT_BLOCKS then
+	dofile(path.."/default_blocks.lua")
+end
 
 -- for random colour selection
 local all_colours = {
 	"grey", "black", "red", "yellow", "green", "cyan", "blue", "magenta",
 	"orange", "violet", "brown", "pink", "dark_grey", "dark_green", "white"
-}
-
--- default items in chests
-local chest_stuff = {
-	{name = "default:apple", max = 3},
-	{name = "default:steel_ingot", max = 2},
-	{name = "default:gold_ingot", max = 2},
-	{name = "default:diamond", max = 1},
-	{name = "default:pick_steel", max = 1}
 }
 
 -- particle effects
