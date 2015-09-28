@@ -9,6 +9,8 @@ local lucky_list = {
 }
 local chest_stuff = {}
 
+local lucky_texture = "lucky_block.png"
+local superlucky_texture = "lucky_block_super.png"
 
 -- EXTERNAL FUNCTIONS
 -- ******************
@@ -25,6 +27,16 @@ function lucky_block:add_chest_items(list)
 	for s = 1, #list do
 		table.insert(chest_stuff, list[s])
 	end
+end
+
+-- change lucky block texture
+function lucky_block:texture_lucky(texture)
+	lucky_texture = texture
+end
+
+-- change super lucky block texture
+function lucky_block:texture_superlucky(texture)
+	superlucky_texture = texture
 end
 
 -- ******************
@@ -367,8 +379,8 @@ end
 minetest.register_node('lucky_block:lucky_block', {
 	description = "Lucky Block",
 	drawtype = "nodebox",
-	tiles = {"lucky_block.png"},
-	inventory_image = minetest.inventorycube("lucky_block.png"),
+	tiles = {lucky_texture},
+	inventory_image = minetest.inventorycube(lucky_texture),
 	sunlight_propagates = false,
 	is_ground_content = false,
 	paramtype = 'light',
@@ -394,8 +406,8 @@ minetest.register_craft({
 minetest.register_node('lucky_block:super_lucky_block', {
 	description = "Super Lucky Block (use Pick)",
 	drawtype = "nodebox",
-	tiles = {"lucky_block_super.png"},
-	inventory_image = minetest.inventorycube("lucky_block_super.png"),
+	tiles = {superlucky_texture},
+	inventory_image = minetest.inventorycube(superlucky_texture),
 	sunlight_propagates = false,
 	is_ground_content = false,
 	paramtype = 'light',
