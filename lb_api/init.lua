@@ -1,59 +1,55 @@
-lucky_block = {}
-
-local USE_DEFAULT_BLOCKS = true
-local USE_DEFAULT_CHEST_ITEMS = true
-local USE_DEFAULT_SCHEMATICS = true
+lb_api = {}
 
 local lucky_list = {
-	{"nod", "lucky_block:super_lucky_block", 0}
+	{"nod", "lb_api:super_lucky_block", 0}
 }
 local chest_stuff = {}
+local use_default_schematics = false
 
-local lucky_texture = "lucky_block.png"
-local superlucky_texture = "lucky_block_super.png"
 
 -- EXTERNAL FUNCTIONS
 -- ******************
 
 -- ability to add new blocks to list
-function lucky_block:add_blocks(list)
+function lb_api:add_blocks(list)
 	for s = 1, #list do
 		table.insert(lucky_list, list[s])
 	end
 end
 
 -- ability to add chest items
-function lucky_block:add_chest_items(list)
+function lb_api:add_chest_items(list)
 	for s = 1, #list do
 		table.insert(chest_stuff, list[s])
 	end
 end
 
--- change lucky block texture
-function lucky_block:texture_lucky(texture)
-	lucky_texture = texture
+-- call to use default schematics,
+-- boolean switch so it can be loaded only once
+-- if called multiple times from other mods
+function lb_api:use_default_schematics()
+	if use_default_schematics == false then
+		dofile(minetest.get_modpath("lb_api").."/schems.lua")
+		use_default_schematics = true
+	end
 end
 
--- change super lucky block texture
-function lucky_block:texture_superlucky(texture)
-	superlucky_texture = texture
+-- call to purge the block list
+function lb_api:purge_block_list()
+	lucky_list = {{"nod", "lb_api:super_lucky_block", 0}}
+	use_default_schematics = false
+end
+
+-- call to purge the chest items list
+function lb_api:purge_chest_items()
+	chest_stuff = {}
 end
 
 -- ******************
 -- END EXTERNAL FUNCTIONS
 
 
--- load defaults??
-local path = minetest.get_modpath("lucky_block")
-if USE_DEFAULT_CHEST_ITEMS then
-	dofile(path.."/default_chest_items.lua")
-end
-if USE_DEFAULT_SCHEMATICS then
-	dofile(path.."/default_schems.lua")
-end
-if USE_DEFAULT_BLOCKS then
-	dofile(path.."/default_blocks.lua")
-end
+
 
 -- for random colour selection
 local all_colours = {
@@ -376,11 +372,11 @@ local lucky_block = function(pos, digger)
 end
 
 -- lucky block itself
-minetest.register_node('lucky_block:lucky_block', {
+minetest.register_node('lb_api:lucky_block', {
 	description = "Lucky Block",
 	drawtype = "nodebox",
-	tiles = {lucky_texture},
-	inventory_image = minetest.inventorycube(lucky_texture),
+	tiles = {"lucky_block.png"},
+	inventory_image = minetest.inventorycube("lucky_block.png"),
 	sunlight_propagates = false,
 	is_ground_content = false,
 	paramtype = 'light',
@@ -394,7 +390,7 @@ minetest.register_node('lucky_block:lucky_block', {
 })
 
 minetest.register_craft({
-	output = "lucky_block:lucky_block",
+	output = "lb_api:lucky_block",
 	recipe = {
 		{"default:gold_ingot", "default:gold_ingot", "default:gold_ingot"},
 		{"default:gold_ingot", "default:chest", "default:gold_ingot"},
@@ -403,11 +399,11 @@ minetest.register_craft({
 })
 
 -- super lucky block
-minetest.register_node('lucky_block:super_lucky_block', {
+minetest.register_node('lb_api:super_lucky_block', {
 	description = "Super Lucky Block (use Pick)",
 	drawtype = "nodebox",
-	tiles = {superlucky_texture},
-	inventory_image = minetest.inventorycube(superlucky_texture),
+	tiles = {"lucky_block_super.png"},
+	inventory_image = minetest.inventorycube("lucky_block_super.png"),
 	sunlight_propagates = false,
 	is_ground_content = false,
 	paramtype = 'light',

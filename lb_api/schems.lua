@@ -96,32 +96,14 @@ local water_trap = {
 	},
 }
 
--- Default
-lucky_block:add_blocks({
+lb_api:add_blocks({
 	{"sch", water_trap, 1, {x = 1, y = 0, z = 1}, true},
 	{"sch", sand_trap, 1, {x = 1, y = 0, z = 1}, true},
-	{"sch", lava_trap, 1, {x = 1, y = 5, z = 1}, true},
+	{"sch", lava_trap, 1, {x = 1, y = 5, z = 1}, true}
 })
 
--- Farming mod
 if minetest.get_modpath("farming") then
-	lucky_block:add_blocks({
-		{"sch", insta_farm, 0, {x = 2, y = 2, z = 1}, true},
+	lb_api:add_blocks({
+		{"sch", insta_farm, 0, {x = 2, y = 2, z = 1}, true}
 	})
 end
-
--- Ethereal mod
-if minetest.get_modpath("ethereal") then
-	local epath = minetest.get_modpath("ethereal") .. "/schematics/"
-	lucky_block:add_blocks({
-		{"sch", epath .. "pinetree.mts", 0, {x = 3, y = 0, z = 3}},
-		{"sch", ethereal.appletree, 0, {x = 1, y = 0, z = 1}},
-		{"sch", ethereal.bananatree, 0, {x = 3, y = 0, z = 3}},
-		{"sch", ethereal.orangetree, 0, {x = 1, y = 0, z = 1}},
-		{"sch", epath .. "acaciatree.mts", 0, {x = 5, y = 0, z = 5}},
-		{"sch", epath .. "palmtree.mts", 0, {x = 4, y = 0, z = 4}},
-	})
-end
-
-
-
