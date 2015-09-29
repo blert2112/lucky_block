@@ -7,7 +7,7 @@ lb_api:add_chest_items({
 	{name = "default:pick_steel", max = 1}
 })
 
-lb_api:use_default_schematics()
+lb_api:use_default_schematics(1)
 
 -- Default blocks
 lb_api:add_blocks({

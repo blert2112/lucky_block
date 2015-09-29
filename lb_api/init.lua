@@ -26,10 +26,13 @@ end
 
 -- call to use default schematics,
 -- boolean switch so it can be loaded only once
--- if called multiple times from other mods
-function lb_api:use_default_schematics()
+-- if called multiple times from other mods without
+-- purging the block list
+function lb_api:use_default_schematics(mult)
 	if use_default_schematics == false then
-		dofile(minetest.get_modpath("lb_api").."/schems.lua")
+		for i = 1, mult do
+			dofile(minetest.get_modpath("lb_api").."/schems.lua")
+		end
 		use_default_schematics = true
 	end
 end
@@ -47,8 +50,6 @@ end
 
 -- ******************
 -- END EXTERNAL FUNCTIONS
-
-
 
 
 -- for random colour selection

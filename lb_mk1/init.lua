@@ -11,7 +11,7 @@ minetest.override_item("lb_api:super_lucky_block", {
 
 lb_api:purge_block_list()
 
-lb_api:use_default_schematics()
+lb_api:use_default_schematics(4)
 
 lb_api:add_chest_items({
 	{name = "default:apple", max = 3},
