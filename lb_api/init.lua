@@ -1,7 +1,7 @@
 lb_api = {}
 
 local lucky_list = {
-	{"nod", "lb_api:super_lucky_block", 0}
+	--{"nod", "lb_api:super_lucky_block", 0}
 }
 local chest_stuff = {}
 local use_default_schematics = false
@@ -373,7 +373,7 @@ local lucky_block = function(pos, digger)
 end
 
 -- lucky block itself
-minetest.register_node('lb_api:lucky_block', {
+minetest.register_node("lb_api:lucky_block", {
 	description = "Lucky Block",
 	drawtype = "nodebox",
 	tiles = {"lucky_block.png"},
@@ -400,7 +400,7 @@ minetest.register_craft({
 })
 
 -- super lucky block
-minetest.register_node('lb_api:super_lucky_block', {
+minetest.register_node("lb_api:super_lucky_block", {
 	description = "Super Lucky Block (use Pick)",
 	drawtype = "nodebox",
 	tiles = {"lucky_block_super.png"},
@@ -424,5 +424,54 @@ minetest.register_node('lb_api:super_lucky_block', {
 		})
 	end,
 })
+
+-- FOR THE WELL
+minetest.register_node("lb_api:well_water_b", {
+	description = "Well Water",
+	inventory_image = minetest.inventorycube("default_water.png"),
+	drawtype = "liquid",
+	tiles = {
+		{
+			name = "default_water_source_animated.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 2.0,
+			},
+		},
+	},
+	alpha = 180,
+	paramtype = "light",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	is_ground_content = false,
+	groups = {not_in_creative_inventory=1},
+})
+minetest.register_node("lb_api:well_water_t", {
+	description = "Well Water",
+	inventory_image = minetest.inventorycube("default_water.png"),
+	drawtype = "liquid",
+	tiles = {
+		{
+			name = "default_water_source_animated.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 2.0,
+			},
+		},
+	},
+	alpha = 180,
+	paramtype = "light",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	is_ground_content = false,
+	groups = {not_in_creative_inventory=1},
+})
+
 
 print ("[MOD] Lucky Blocks loaded ("..#lucky_list.." in total)")

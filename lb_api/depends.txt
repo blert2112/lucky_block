@@ -2,3 +2,4 @@ default
 farming?
 mobs?
 fire?
+brazier?
