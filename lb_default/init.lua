@@ -1,204 +1,110 @@
 
-lb_api:add_chest_items({
-	{name = "default:apple", max = 3},
-	{name = "default:steel_ingot", max = 2},
-	{name = "default:gold_ingot", max = 2},
-	{name = "default:diamond", max = 1},
-	{name = "default:pick_steel", max = 1}
-})
-
-lb_api:use_default_schematics(1)
-
--- Default blocks
-lb_api:add_blocks({
-	{"tel"},
-	{"dro", {"wool:"}, 10, true},
-	{"dro", {"default:apple"}, 10},
-	{"dro", {"default:snow"}, 10},
-	{"nod", "default:chest", 0, {
-		{name = "bucket:bucket_water", max = 1},
+lb_lib:register_lucky_block({
+	tiles = {"lb_mk1.png"},
+	light_emitted = 3,
+	in_creative = true,
+	particle_textures = {
+		place_node = "lb_mk1_place_node.png",
+		teleport = "lb_mk1_teleport.png",
+	},
+	sounds = {
+		block = default.node_sound_wood_defaults(),
+		troll_remove = "lb_mk1_remove_troll",
+		teleport = "lb_mk1_teleport",
+	},
+	craft_recipe = {
+		{"default:gold_ingot",	"default:gold_ingot",	"default:gold_ingot"},
+		{"default:gold_ingot",	"default:chest",		"default:gold_ingot"},
+		{"default:gold_ingot",	"default:gold_ingot",	"default:gold_ingot"}
+	},
+	up_luck_items = {
+		{name = "default:steel_ingot", value = 2},
+		{name = "default:gold_ingot", value = 5},
+		{name = "default:diamond", value = 10}
+	},
+	down_luck_items = {
+		{name = "default:dirt", value = -5},
+		{name = "default:sand", value = -10}
+	},
+	chest_items = {
+		{name = "default:apple", max = 3},
 		{name = "default:wood", max = 3},
-		{name = "default:pick_diamond", max = 1},
-		{name = "default:coal_lump", max = 3}}},
-	{"nod", "flowers:rose", 0},
-	{"dro", {"default:mese_crystal_fragment", "default:mese_crystal"}, 10},
-	{"exp"},
-	{"nod", "default:diamondblock", 0},
-	{"nod", "default:steelblock", 0},
-	{"nod", "default:dirt", 0},
-	{"dro", {"default:sword_steel"}, 1},
-	{"dro", {"default:pick_steel"}, 1},
-	{"dro", {"default:shovel_steel"}, 1},
-	{"dro", {"default:coal_lump"}, 3},
-	{"dro", {"default:axe_steel"}, 1},
-	{"dro", {"default:sword_bronze"}, 1},
-	{"nod", "default:wood", 0},
-	{"dro", {"default:pick_bronze"}, 1},
-	{"dro", {"default:shovel_bronze"}, 1},
-	{"nod", "default:gravel", 0},
-	{"dro", {"default:axe_bronze"}, 1},
+		{name = "bucket:bucket_water", max = 1},
+		{name = "default:steel_ingot", max = 2}
+	},
+
+	fire_node = "fire:basic_flame"
 })
 
--- Farming mod
-if minetest.get_modpath("farming") then
-	lb_api:add_blocks({
-		{"dro", {"farming:bread"}, 5},
-	})
+local sheep = {
+	"mobs:sheep_grey", "mobs:sheep_black", "mobs:sheep_red", "mobs:sheep_yellow", "mobs:sheep_green",
+	"mobs:sheep_cyan", "mobs:sheep_blue", "mobs:sheep_magenta", "mobs:sheep_white", "mobs:sheep_orange",
+	"mobs:sheep_violet", "mobs:sheep_brown", "mobs:sheep_pink", "mobs:sheep_dark_grey", "mobs:sheep_dark_green"
+}
 
-if farming.mod and farming.mod == "redo" then
-	lb_api:add_blocks({
-		{"dro", {"farming:corn"}, 5},
-		{"dro", {"farming:coffee_cup_hot"}, 1},
-		{"dro", {"farming:bread"}, 5},
-		{"nod", "farming:jackolantern", 0},
-		{"dro", {"farming:bottle_ethanol"}, 1},
-		{"nod", "farming:melon", 0},
-		{"dro", {"farming:donut", "farming:donut_chocolate", "farming:donut_apple"}, 5},
-	})
-end
-end
+local sandtower = {"default:sand", "default:sand", "default:sand", "default:sand", "default:sand", "default:sand", "default:goldblock"}
 
--- Mobs mod
-if minetest.get_modpath("mobs") then
-	lb_api:add_blocks({
-		{"spw", "mobs:sheep", 5},
-		{"spw", "mobs:dungeon_master", 1},
-		{"spw", "mobs:sand_monster", 3},
-		{"spw", "mobs:stone_monster", 3},
-		{"dro", {"mobs:meat_raw"}, 5},
-		{"spw", "mobs:rat", 5},
-		{"spw", "mobs:dirt_monster", 3},
-		{"spw", "mobs:tree_monster", 3},
-		{"spw", "mobs:oerkki", 3},
-		{"dro", {"mobs:rat_cooked"}, 5},
-	})
-if mobs.mod and mobs.mod == "redo" then
-	lb_api:add_blocks({
-		{"spw", "mobs:bunny", 3},
-		{"spw", "mobs:spider", 5},
-		{"nod", "mobs:honey_block", 0},
-		{"spw", "mobs:pumba", 5},
-		{"spw", "mobs:mese_monster", 2},
-		{"nod", "mobs:cheeseblock", 0},
-		{"spw", "mobs:chicken", 5},
-		{"dro", {"mobs:egg"}, 5},
-		{"spw", "mobs:lava_flan", 3},
-		{"spw", "mobs:cow", 5},
-		{"dro", {"mobs:bucket_milk"}, 10},
-		{"spw", "mobs:kitten", 2},
-		{"tro", "default:nyancat", "mobs_kitten", true},
-		{"nod", "default:chest", 0, {
-			{name = "mobs:lava_orb", max = 1}}},
-	})
-end
-end
+local chest_dpick = {
+	{name = "default:pick_diamond", max = 1},
+	{name = "default:coal_lump", max = 3}
+}
 
--- Home Decor mod
-if minetest.get_modpath("homedecor") then
-	lb_api:add_blocks({
-		{"nod", "homedecor:toilet", 0},
-	})
-end
+lb_lib:add_actions({
 
--- Teleport Potion mod
-if minetest.get_modpath("teleport_potion") then
-	lb_api:add_blocks({
-		{"dro", {"teleport_potion:potion"}, 1},
-	})
-end
+--	("nod", luck, node_name, {options})				-- options: troll, explode
+	{"nod", 1, "default:diamondblock"},
+	{"nod", 1, "default:steelblock"},
+	{"nod", 0, "default:wood"},
+	{"nod", -1, "default:dirt"},
+	{"nod", -1, "default:gravel"},
+	{"nod", -1, "default:diamondblock", {explode=true}},
+	{"nod", 1, "default:steelblock", {troll=true}},
+	{"nod", -1, "tnt:tnt_burning"},
 
--- Protector mod
-if minetest.get_modpath("protector") then
-	lb_api:add_blocks({
-		{"dro", {"protector:protect"}, 3},
-	})
-if protector.mod and protector.mod == "redo" then
-	lb_api:add_blocks({
-		{"dro", {"protector:protect2"}, 3},
-		{"dro", {"protector:door_wood"}, 1},
-		{"dro", {"protector:door_steel"}, 1},
-		{"dro", {"protector:chest"}, 1},
-	})
-end
-end
+--	("tel", luck, {options})						-- options: xz_radius, y_radius
+	{"tel", -1},
+	{"tel", -1, {xz_radius=0, y_radius=150}},
 
--- Ethereal mod
-if minetest.get_modpath("ethereal") then
-local epath = minetest.get_modpath("ethereal") .. "/schematics/"
-lb_api:add_blocks({
-	{"nod", "ethereal:crystal_spike", 1},
-	{"sch", epath .. "pinetree.mts", 0, {x = 3, y = 0, z = 3}},
-	{"dro", {"ethereal:orange"}, 10},
-	{"sch", ethereal.appletree, 0, {x = 1, y = 0, z = 1}},
-	{"dro", {"ethereal:strawberry"}, 10},
-	{"sch", ethereal.bananatree, 0, {x = 3, y = 0, z = 3}},
-	{"sch", ethereal.orangetree, 0, {x = 1, y = 0, z = 1}},
-	{"dro", {"ethereal:banana"}, 10},
-	{"sch", epath .. "acaciatree.mts", 0, {x = 5, y = 0, z = 5}},
-	{"dro", {"ethereal:golden_apple"}, 3},
-	{"sch", epath .. "palmtree.mts", 0, {x = 4, y = 0, z = 4}},
-	{"dro", {"ethereal:tree_sapling", "ethereal:orange_tree_sapling", "ethereal:banana_tree_sapling"}, 10},
-	{"dro", {"ethereal:green_dirt", "ethereal:prairie_dirt", "ethereal:grove_dirt", "ethereal:cold_dirt"}, 10},
-	{"dro", {"ethereal:axe_crystal"}, 1},
-	{"dro", {"ethereal:sword_crystal"}, 1},
-	{"dro", {"ethereal:pick_crystal"}, 1},
-	{"dro", {"ethereal:fish_raw"}, 1},
-	{"dro", {"ethereal:shovel_crystal"}, 1},
-	{"dro", {"ethereal:fishing_rod_baited"}, 1},
+--	("lig", luck)
+	{"lig", -1},
+
+--	("dro", luck, {list}, {options})				-- options: ammount
+	{"dro", 0, {"default:apple"}, {ammount=10}},
+	{"dro", 0, {"default:snow"}, {ammount=5}},
+	{"dro", 1, {"default:mese_crystal_fragment", "default:mese_crystal"}, {ammount=10}},
+	{"dro", 1, {"default:sword_steel", "default:sword_bronze"}},
+	{"dro", 1, {"default:pick_steel", "default:shovel_steel", "default:axe_steel"}},
+	{"dro", 0, {"default:coal_lump"}, {ammount=3}},
+	{"dro", 0, {"default:pick_bronze", "default:shovel_bronze", "default:axe_bronze"}},
+
+--	("cst", luck, chest_node, {options})			-- options: contents, empty
+	{"cst", 1, "default:chest", {contents=chest_dpick}},
+	{"cst", -1, "default:chest", {empty=true}},
+	{"cst", 0, "default:chest"},
+
+--	("sch", luck, schematic, {options})				-- options: at_digger_pos, force
+	{"sch", -1, "watertrap", {at_digger_pos=true}},
+	{"sch", -1, "sandtrap", {at_digger_pos=true}},
+	{"sch", -1, "lavatrap", {at_digger_pos=true}},
+	{"sch", 0, "instafarm"},
+	{"sch", 1, "wishingwell"},
+	{"sch", 1, "platform"},
+
+--	("spn", luck, {list}, {options})				-- options: ammount, radius, tame, own
+	{"spn", 0, {"mobs:rat"}, {ammount=5}},
+	{"spn", -1, {"mobs:sand_monster", "mobs:stone_monster", "mobs:dirt_monster", "mobs:tree_monster"}, {ammount=3}},
+	{"spn", -1, {"mobs:dungeon_master"}},
+	{"spn", -1, {"mobs:oerkki"}, {ammount=3}},
+	{"spn", 1, sheep, {ammount=6, radius=6}},
+	{"spn", 0, {"mobs:sheep_white"}, {ammount=3, tame=true, own=true}},
+
+--	{"fal", luck, {list}, {options}}				-- options: at_digger_pos, scatter, radius
+	{"fal", 1, sandtower},
+	{"fal", 1, {"default:diamondblock", "default:steelblock", "default:goldblock", "mobs:cheeseblock"}, {scatter=true}},
+	{"fal", -1, {"default:obsidian", "default:obsidian"}, {at_digger_pos=true}},
+	{"fal", -1, {"tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning"}, {scatter=true}},
+
+--	{"exp", luck, {options})						-- options: disable_drops, radius, damage_radius_modifier
+	{"exp", -1},
+	{"exp", -1, {radius=6, damage_radius_modifier=4}},
 })
-end
-
--- 3D Armor mod
-if minetest.get_modpath("3d_armor") then
-lb_api:add_blocks({
-	{"dro", {"3d_armor:boots_wood", "3d_armor:leggings_wood", "3d_armor:chestplate_wood", "3d_armor:helmet_wood", "shields:shield_wood"}, 3},
-	{"dro", {"3d_armor:boots_steel", "3d_armor:leggings_steel", "3d_armor:chestplate_steel", "3d_armor:helmet_steel", "shields:shield_steel"}, 3},
-	{"dro", {"3d_armor:boots_gold", "3d_armor:leggings_gold", "3d_armor:chestplate_gold", "3d_armor:helmet_gold", "shields:shield_gold"}, 3},
-	{"dro", {"3d_armor:boots_cactus", "3d_armor:leggings_cactus", "3d_armor:chestplate_cactus", "3d_armor:helmet_cactus", "shields:shield_cactus"}, 3},
-	{"dro", {"3d_armor:boots_bronze", "3d_armor:leggings_bronze", "3d_armor:chestplate_bronze", "3d_armor:helmet_bronze", "shields:shield_bronze"}, 3},
-})
-end
-
--- Fire mod
-if minetest.get_modpath("fire") then
-lb_api:add_blocks({
-	{"nod", "fire:basic_flame", 1},
-})
-end
-
--- Pie mod
-if minetest.get_modpath("pie") then
-lb_api:add_blocks({
-	{"nod", "pie:pie_0", 0},
-	{"nod", "pie:choc_0", 0},
-	{"nod", "pie:coff_0", 0},
-	{"nod", "pie:rvel_0", 0},
-	{"nod", "pie:scsk_0", 0},
-	{"nod", "pie:meat_0", 0},
-})
-end
-
--- Bakedclay mod
-if minetest.get_modpath("bakedclay") then
-lb_api:add_blocks({
-	{"dro", {"bakedclay:"}, 10, true}
-})
-end
-
--- Xanadu Server specific
-if minetest.get_modpath("xanadu") then
-lb_api:add_blocks({
-	{"dro", {"xanadu:cupcake"}, 8},
-	{"spw", "mobs:creeper", 1},
-	{"spw", "mobs:npc", 1, true, true},
-	{"nod", "default:chest", 0, {
-		{name = "xanadu:axe_super", max = 1},
-		{name = "xanadu:pizza", max = 2}}},
-	{"dro", {"paintings:"}, 10, true},
-	{"spw", "mobs:greensmall", 4},
-	{"dro", {"carpet:"}, 10, true},
-	{"dro", {"carpet:wallpaper_"}, 10, true},
-	{"nod", "default:chest", 0, {
-		{name = "mobs:mese_monster_wing", max = 1}}}
-})
-end
