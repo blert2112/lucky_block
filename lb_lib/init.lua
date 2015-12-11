@@ -77,7 +77,7 @@ end
 local function place_node(pos, node_name, options)
 	local troll = options.troll or false
 	local explode = options.explode or false
-
+print(node_name)
 	if particle_textures.place_node then
 		particles(pos, particle_textures.place_node)
 	end
@@ -87,7 +87,7 @@ local function place_node(pos, node_name, options)
 	if (troll == true) or (explode == true) then
 		minetest.after(1.0, function()
 			if explode == true then
-				boom(pos, 2, 3, false, {})
+				boom(pos, 2, 3, false, nil)
 			else
 				if sounds.troll_remove then
 					play_sound(sounds.troll_remove, {pos=pos, gain=1.0, max_hear_distance=10})
