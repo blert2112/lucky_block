@@ -1,14 +1,17 @@
 
-            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                    Version 2, December 2004
 
- Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+lb_mk1_remove_troll.ogg		is		default_break_glass.2.ogg
+- Glass breaking sounds (CC BY 3.0):
+  1: http://www.freesound.org/people/cmusounddesign/sounds/71947/
+  2: http://www.freesound.org/people/Tomlija/sounds/97669/
+  3: http://www.freesound.org/people/lsprice/sounds/88808/
 
- Everyone is permitted to copy and distribute verbatim or modified
- copies of this license document, and changing it is allowed as long
- as the name is changed.
+lb_mk1_teleport.ogg			is		default_cool_lava.1.ogg
+- celeron55 (CC BY-SA 3.0)
 
-            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+lb_mk1_place_node.png		is		default_mineral_mese.png
+lb_mk1_teleport.png			is		default_mineral_mese.png (modified)
+- BlockMen (CC BY-SA 3.0):
 
-  0. You just DO WHAT THE FUCK YOU WANT TO. 
+lb_mk1.png					is		lucky_block.png (modified)
+- tenplus1 (WTFPL)

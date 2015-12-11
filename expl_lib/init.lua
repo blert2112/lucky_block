@@ -211,14 +211,6 @@ function expl_lib.register_drop_loss(name, probability)
 	loss_prob[name] = probability
 end
 
-function expl_lib.get_random(vmin, vmax)
-	if not vmax then
-		vmax = vmin
-		vmin = 1
-	end
-	return pr:next(vmin,vmax)
-end
-
 minetest.register_node("expl_lib:boom", {
 	drawtype = "plantlike",
 	tiles = {"expl_lib_boom.png"},
@@ -232,13 +224,3 @@ minetest.register_node("expl_lib:boom", {
 	-- unaffected by explosions
 	on_blast = function() end,
 })
-
--- reset randomizer every 5 minutes to aviod patterns
-local timer = 0
-minetest.register_globalstep(function(dtime)
-	timer = timer + dtime;
-	if timer >= 300 then
-		pr = PseudoRandom(os.time())
-		timer = 0
-	end
-end)

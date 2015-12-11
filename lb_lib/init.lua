@@ -18,10 +18,11 @@ local remove_node = minetest.remove_node
 local add_particlespawner = minetest.add_particlespawner
 local get_node_or_nil = minetest.get_node_or_nil
 
-local get_random = expl_lib.get_random
 local entity_physics = expl_lib.entity_physics
 local spawn_drops = expl_lib.spawn_drops
 local boom = expl_lib.boom
+
+local pr = PseudoRandom(os.time())
 
 
 -------------------------------------------------------------------------------
@@ -111,9 +112,9 @@ local function teleport(pos, digger, options)
 		particles(pos, particle_textures.teleport)
 	end
 
-	pos.x = pos.x + get_random(-xz_radius, xz_radius)
-	pos.y = pos.y + get_random(-y_radius, y_radius)
-	pos.z = pos.z + get_random(-xz_radius, xz_radius)
+	pos.x = pos.x + pr:next(-xz_radius, xz_radius)
+	pos.y = pos.y + pr:next(-y_radius, y_radius)
+	pos.z = pos.z + pr:next(-xz_radius, xz_radius)
 	pos = vector.round(pos)
 
 	digger:moveto(pos, false)
@@ -162,14 +163,16 @@ local function place_chest(pos, chest, options)
 		return
 	end
 
-	for i = 0,2 do
-		local item = chest_items[get_random(1, #chest_items)]
-		table.insert(contents, {name = item.name, count = get_random(1, item.max)})
+	if chest_items then
+		for i = 0,2 do
+			local item = chest_items[pr:next(1, #chest_items)]
+			table.insert(contents, {name = item.name, count = pr:next(1, item.max)})
+		end
 	end
 
 	for i = 1, #contents do
 		if not inv:contains_item("main", contents[i]) then
-			inv:set_stack("main", get_random(1, 32), contents[i])
+			inv:set_stack("main", pr:next(1, 32), contents[i])
 		end
 	end
 end
@@ -205,12 +208,12 @@ local function place_entity(pos, digger, entity_list, options)
 
 	local p1 = {}
 	for i = 1, ammount do
-		p1.x = pos.x + get_random(-radius, radius)
+		p1.x = pos.x + pr:next(-radius, radius)
 		p1.y = pos.y + 1
-		p1.z = pos.z + get_random(-radius, radius)
+		p1.z = pos.z + pr:next(-radius, radius)
 
 		if get_node_or_nil(p1).name == "air" then
-			local entity = entity_list[get_random(#entity_list)]
+			local entity = entity_list[pr:next(1, #entity_list)]
 			local mob = minetest.add_entity(p1, entity)
 			local ent = mob:get_luaentity()
 
@@ -229,7 +232,7 @@ end
 local function falling(pos, digger, nodes, options)
 	local scatter = options.scatter or false
 	local at_digger_pos = options.at_digger_pos or false
-	local radius = options.radius or 6
+	local radius = options.radius or 5
 
 	if at_digger_pos == true then
 		pos = digger:getpos()
@@ -242,8 +245,8 @@ local function falling(pos, digger, nodes, options)
 			local node = minetest.registered_nodes[nodes[i]]
 			local p = pos
 			if scatter == true then
-				p.x = pos.x + get_random(-radius,radius)
-				p.z = pos.z + get_random(-radius,radius)
+				p.x = pos.x + pr:next(-radius,radius)
+				p.z = pos.z + pr:next(-radius,radius)
 			end
 			local obj = minetest.add_entity(p, "__builtin:falling_node")
 			obj:get_luaentity():set_node(node)
@@ -313,14 +316,14 @@ local function get_action(luck)
 	local action = {}
 	local choice
 	local ac_one, ac_two, ac_three
-	local luck_check = get_random(100)
+	local luck_check = pr:next(1,100)
 	if luck_check <= luck then
 		ac_one = 1
 	else
 		ac_one = -1
 	end
 	repeat
-		choice = get_random(1, #action_list)
+		choice = pr:next(1, #action_list)
 		action = action_list[choice]
 		ac_two = action[2]
 		if (ac_two == 0) or (ac_two == ac_one) then
@@ -444,6 +447,20 @@ end)
 
 
 -------------------------------------------------------------------------------
+--							Global step
+-------------------------------------------------------------------------------
+-- reset randomizer every 5 minutes to aviod patterns
+local timer = 0
+minetest.register_globalstep(function(dtime)
+	timer = timer + dtime;
+	if timer >= 300 then
+		pr = PseudoRandom(os.time())
+		timer = 0
+	end
+end)
+
+
+-------------------------------------------------------------------------------
 --							External functions
 -------------------------------------------------------------------------------
 
@@ -458,8 +475,8 @@ function lb_lib:register_lucky_block(def)
 
 	minetest.register_node(":lb_lib:lucky_block", {
 		description = "Lucky Block",
-		drawtype = "nodebox",
 		tiles = def.tiles or {"lb_lib_node.png"},
+		inventory_image = def.inventory_image or minetest.inventorycube("lb_lib_node.png"),
 		sunlight_propagates = false,
 		is_ground_content = false,
 		paramtype = 'light',
@@ -478,7 +495,7 @@ function lb_lib:register_lucky_block(def)
 			if infotext then
 				luck = tonumber(string.trim(string.sub(infotext, -3)))
 			else
-				luck = get_random(100)
+				luck = pr:next(1,100)
 			end
 			print("Luck: "..luck)
 			local action = get_action(luck)
@@ -521,6 +538,8 @@ function lb_lib:register_lucky_block(def)
 			})
 		end
 	end
+	
+	chest_items = def.chest_items or nil
 
 	particle_textures.place_node = def.particle_textures.place_node or nil
 	particle_textures.teleport = def.particle_textures.teleport or nil

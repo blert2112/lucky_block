@@ -1,16 +1,20 @@
 
 lb_lib:register_lucky_block({
-	tiles = {"lb_mk1.png"},
-	light_emitted = 3,
-	in_creative = true,
-	particle_textures = {
-		place_node = "lb_mk1_place_node.png",
-		teleport = "lb_mk1_teleport.png",
+	tiles = {{																			-- optional
+		name="lb_mk1_animated.png",
+		animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=1},
+	}},
+	inventory_image = minetest.inventorycube("lb_mk1.png"),								-- optional
+	light_emitted = 3,																	-- optional
+	in_creative = true,																	-- optional, default = false
+	particle_textures = {																-- optional
+		place_node = "lb_mk1_place_node.png",												-- optional
+		teleport = "lb_mk1_teleport.png",													-- optional
 	},
-	sounds = {
-		block = default.node_sound_wood_defaults(),
-		troll_remove = "lb_mk1_remove_troll",
-		teleport = "lb_mk1_teleport",
+	sounds = {																			-- optional
+		block = default.node_sound_wood_defaults(),											-- optional
+		troll_remove = "lb_mk1_remove_troll",												-- optional
+		teleport = "lb_mk1_teleport",														-- optional
 	},
 	craft_recipe = {
 		{"default:gold_ingot",	"default:gold_ingot",	"default:gold_ingot"},
@@ -26,14 +30,13 @@ lb_lib:register_lucky_block({
 		{name = "default:dirt", value = -5},
 		{name = "default:sand", value = -10}
 	},
-	chest_items = {
+	chest_items = {																		-- optional
 		{name = "default:apple", max = 3},
 		{name = "default:wood", max = 3},
 		{name = "bucket:bucket_water", max = 1},
 		{name = "default:steel_ingot", max = 2}
 	},
-
-	fire_node = "fire:basic_flame"
+	fire_node = "fire:basic_flame"														-- optional
 })
 
 local sheep = {
@@ -49,6 +52,8 @@ local chest_dpick = {
 	{name = "default:coal_lump", max = 3}
 }
 
+local bombs_away = {"tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning"}
+
 lb_lib:add_actions({
 
 --	("nod", luck, node_name, {options})				-- options: troll, explode
@@ -58,7 +63,7 @@ lb_lib:add_actions({
 	{"nod", -1, "default:dirt"},
 	{"nod", -1, "default:gravel"},
 	{"nod", -1, "default:diamondblock", {explode=true}},
-	{"nod", 1, "default:steelblock", {troll=true}},
+	{"nod", 0, "default:steelblock", {troll=true}},
 	{"nod", -1, "tnt:tnt_burning"},
 
 --	("tel", luck, {options})						-- options: xz_radius, y_radius
@@ -102,7 +107,7 @@ lb_lib:add_actions({
 	{"fal", 1, sandtower},
 	{"fal", 1, {"default:diamondblock", "default:steelblock", "default:goldblock", "mobs:cheeseblock"}, {scatter=true}},
 	{"fal", -1, {"default:obsidian", "default:obsidian"}, {at_digger_pos=true}},
-	{"fal", -1, {"tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning", "tnt:tnt_burning"}, {scatter=true}},
+	{"fal", -1, bombs_away, {scatter=true, radius=8}},
 
 --	{"exp", luck, {options})						-- options: disable_drops, radius, damage_radius_modifier
 	{"exp", -1},
